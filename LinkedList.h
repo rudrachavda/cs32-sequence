@@ -14,44 +14,46 @@
 #include <initializer_list>
 #include <ostream>
 #include <stdexcept>
+#include "Sequence.h"
 
 template <typename T>
-class LinkedList {
+class LinkedList : public Sequence<T> {
 public:
     LinkedList();                              // empty list
     LinkedList(std::initializer_list<T> il);   // LinkedList<int> l{1, 2, 3};
-    LinkedList(const LinkedList& other);       // deep copy
-    LinkedList& operator=(const LinkedList& other);
+    LinkedList(const LinkedList &other);       // deep copy
+    LinkedList &operator=(const LinkedList &other);
     ~LinkedList();
 
-    std::size_t size() const;
-    T& at(std::size_t i);                      // throws std::out_of_range if i >= size()
-    const T& at(std::size_t i) const;
-    void insert(std::size_t index, const T& value); // throws std::out_of_range if index > size()
-    void erase(std::size_t index);             // throws std::out_of_range if index >= size()
+    std::size_t size() const override;
+    T &at(std::size_t i) override;                      // throws std::out_of_range if i >= size()
+    const T &at(std::size_t i) const override;
+    void insert(std::size_t index, const T &value) override; // throws std::out_of_range if index > size()
+    void erase(std::size_t index) override;             // throws std::out_of_range if index >= size()
 
-    bool empty() const;
-    T& front();                                // throws std::out_of_range if empty
-    T& back();                                 // throws std::out_of_range if empty
-    void push_back(const T& value);
-    void pop_back();                           // throws std::out_of_range if empty
-    bool contains(const T& value) const;
-    int indexOf(const T& value) const;         // -1 if not found
-    void print(std::ostream& os) const;        // prints [1, 2, 3]
-    bool operator==(const LinkedList& other) const;   // same size and same elements
-    bool operator!=(const LinkedList& other) const;
+    // bool empty() const;
+    // T &front();                                // throws std::out_of_range if empty
+    // T &back();                                 // throws std::out_of_range if empty
+    
+    void push_back(const T &value);
+    // void pop_back();                           // throws std::out_of_range if empty
+    // bool contains(const T &value) const;
+    // int indexOf(const T &value) const;         // -1 if not found
+    // void print(std::ostream &os) const;        // prints [1, 2, 3]
+    // bool operator==(const LinkedList &other) const;   // same size and same elements
+    // bool operator!=(const LinkedList &other) const;
 
 private:
     struct Node {
         T value;
-        Node* next;
+        Node *next;
     };
 
-    Node* head_;        // first node, or nullptr if the list is empty
+    Node *head_;        // first node, or nullptr if the list is empty
     std::size_t size_;  // number of nodes
 
-    Node* node_at(std::size_t i) const;        // walks i steps from head_; i must be < size_
-    void append_all(const LinkedList& other);  // appends a copy of each of other's elements
+    Node *node_at(std::size_t i) const;        // walks i steps from head_; i must be < size_
+    void append_all(const LinkedList &other);  // appends a copy of each of other's elements
     void free_all();                           // deletes every node; the list becomes empty
 };
 
