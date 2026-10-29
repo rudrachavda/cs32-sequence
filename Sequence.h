@@ -38,29 +38,33 @@
 template <typename T>
 class Sequence {
 public:
+    virtual ~Sequence() = default;
+
     // ---- The five primitives ----
-    std::size_t size() const;
-    T& at(std::size_t i);
-    const T& at(std::size_t i) const;
-    void insert(std::size_t index, const T& value);
-    void erase(std::size_t index);
+    virtual std::size_t size() const = 0;
+    virtual T& at(std::size_t i) = 0;
+    virtual const T& at(std::size_t i) const = 0;
+    virtual void insert(std::size_t index, const T &value) = 0;
+    virtual void erase(std::size_t index) = 0;
 
     // ---- Shared operations ----
     bool empty() const;
     T& front();
     T& back();
-    void push_back(const T& value);
+
+    virtual void push_back(const T &value);
     void pop_back();
-    bool contains(const T& value) const;
-    int indexOf(const T& value) const;
-    void print(std::ostream& os) const;
+    virtual bool contains(const T &value) const;
+    virtual int indexOf(const T &value) const;
+
+    void print(std::ostream &os) const;
 };
 
 template <typename T>
-bool operator==(const Sequence<T>& a, const Sequence<T>& b);
+bool operator==(const Sequence<T> &a, const Sequence<T> &b);
 
 template <typename T>
-bool operator!=(const Sequence<T>& a, const Sequence<T>& b);
+bool operator!=(const Sequence<T> &a, const Sequence<T> &b);
 
 
 // Templates must be visible wherever they are used, so instead of compiling
